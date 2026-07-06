@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLDK - Cyber Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+        
+        .logo-font { font-family: 'Playfair Display', serif; }
+        
+        .hero {
+            background: linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.9)), url('https://picsum.photos/id/1015/2000/1200');
+            background-size: cover;
+        }
+        
+        .gold { color: #d4af37; }
+        
+        .monogram {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22rem;
+            opacity: 0.07;
+            color: #d4af37;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: screen;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="monogram logo-font">ND</div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="logo-font text-4xl gold tracking-tighter">NLDK</div>
+            <div class="flex gap-8 text-sm uppercase tracking-widest">
+                <a href="#noah" class="hover:text-[#d4af37]">NOAH</a>
+                <a href="#lian" class="hover:text-[#d4af37]">LIAN</a>
+                <a href="#derek" class="hover:text-[#d4af37]">DEREK</a>
+            </div>
+            <button onclick="toggleCart()" class="flex items-center gap-2">
+                <i class="fas fa-shopping-bag text-2xl"></i>
+                <span id="cart-count" class="bg-[#d4af37] text-black px-3 py-1 rounded-full text-sm font-bold">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero min-h-screen flex items-center justify-center text-center relative">
+        <div class="max-w-4xl px-6">
+            <h1 class="logo-font text-8xl md:text-[180px] leading-none gold tracking-tighter">NLDK</h1>
+            <p class="text-2xl mt-6 text-white/80">Noah • Lian • Derek</p>
+            <p class="mt-4 text-lg max-w-md mx-auto">Indumentaria masculina de lujo futurista</p>
+            
+            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})" 
+                        class="px-10 py-6 bg-[#d4af37] text-black font-bold text-lg">VER COLECCIÓN</button>
+                <button onclick="window.open('https://wa.me/541141457497','_blank')" 
+                        class="px-10 py-6 border border-white/60 hover:border-[#d4af37] text-lg">WHATSAPP</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-center logo-font text-6xl gold mb-16">COLECCIÓN 2026</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 bg-black border-t border-white/10 text-center">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-center gap-8 text-4xl mb-8">
+                <a href="https://wa.me/541141457497" target="_blank" class="hover:text-[#d4af37]"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/indumentaria20008" target="_blank" class="hover:text-[#d4af37]"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-white/50">© 2026 NLDK Indumentaria</p>
+        </div>
+    </footer>
+
+    <!-- Cart -->
+    <div id="cart-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+        <div class="bg-zinc-900 w-full max-w-md mx-4 rounded-3xl p-8">
+            <h3 class="text-3xl mb-8">Carrito</h3>
+            <div id="cart-items" class="space-y-6"></div>
+            <div class="flex justify-between text-2xl mt-10 pt-8 border-t border-white/20">
+                <span>Total</span>
+                <span id="cart-total" class="gold">$0</span>
+            </div>
+            <button onclick="checkout()" class="mt-8 w-full py-6 bg-[#d4af37] text-black font-bold">FINALIZAR POR WHATSAPP</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            {id:1, name:"Conjunto Marrón con Piel", price:30000, img:"https://picsum.photos/id/201/600/700"},
+            {id:2, name:"Conjunto Gris", price:30000, img:"https://picsum.photos/id/251/600/700"},
+            {id:3, name:"Conjunto Argentina Beige", price:38000, img:"https://picsum.photos/id/1015/600/700"},
+            {id:4, name:"Conjunto Argentina Negro", price:38000, img:"https://picsum.photos/id/106/600/700"},
+            {id:5, name:"Conjunto 23 Marrón", price:35000, img:"https://picsum.photos/id/180/600/700"},
+            {id:6, name:"Conjunto 23 Verde", price:35000, img:"https://picsum.photos/id/201/600/700"}
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/10">
+                    <img src="\( {p.img}" class="w-full h-96 object-cover" alt=" \){p.name}">
+                    <div class="p-8">
+                        <h3 class="text-xl">${p.name}</h3>
+                        <p class="text-3xl gold mt-2">\[ {p.price.toLocaleString('es-AR')}</p>
+                        <button onclick="addToCart(${p.id})" class="mt-6 w-full py-5 border border-white/30 hover:bg-[#d4af37] hover:text-black transition-colors">
+                            AGREGAR AL CARRITO
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            document.getElementById('cart-count').textContent = cart.length;
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('hidden');
+            if (!document.getElementById('cart-modal').classList.contains('hidden')) renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            let total = 0;
+            container.innerHTML = cart.map((item, i) => {
+                total += item.price;
+                return `<div class="flex justify-between"><span>${item.name}</span><span class="gold"> \]{item.price}</span></div>`;
+            }).join('');
+            document.getElementById('cart-total').textContent = `$${total.toLocaleString('es-AR')}`;
+        }
+
+        function checkout() {
+            if(cart.length === 0) return;
+            const msg = cart.map(p => p.name).join(', ');
+            window.open(`https://wa.me/541141457497?text=Quiero%20comprar:%20${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        window.onload = renderProducts;
+    </script>
+</body>
+</html>
